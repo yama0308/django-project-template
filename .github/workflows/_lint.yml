@@ -1,0 +1,42 @@
+name: lint
+
+on:
+  workflow_call:
+    inputs:
+      secret_key:
+        required: true
+        type: string
+      database_url:
+        required: true
+        type: string
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ${{ inputs.secret_key }}
+      DATABASE_URL: ${{ inputs.database_url }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+
+    - name: Setup Python
+      run: uv python install
+
+    - uses: actions/cache@v4
+      id: cache
+      with:
+        path: .venv
+        key: ${{ runner.os }}-${{ hashFiles('.python-version') }}-uv-${{ hashFiles('uv.lock') }}
+
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: uv sync
+
+    - name: Python Lint
+      run: uv run poe lint

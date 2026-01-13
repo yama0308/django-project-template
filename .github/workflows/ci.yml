@@ -1,0 +1,32 @@
+name: Python Lint & Test
+
+on:
+  pull_request:
+    paths:
+      - "**.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/_lint.yml"
+      - ".github/workflows/_test.yml"
+      - ".github/workflows/ci.yml"
+  push:
+    paths:
+      - "**.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/_lint.yml"
+      - ".github/workflows/_test.yml"
+      - ".github/workflows/ci.yml"
+
+jobs:
+  lint:
+    uses: ./.github/workflows/_lint.yml
+    with:
+      secret_key: "ci-test-secret-key"
+      database_url: "sqlite://:memory:"
+
+  test:
+    uses: ./.github/workflows/_test.yml
+    with:
+      secret_key: "ci-test-secret-key"
+      database_url: "sqlite://:memory:"
