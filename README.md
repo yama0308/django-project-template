@@ -6,7 +6,11 @@ Django プロジェクトにおける設定ファイルのテンプレートリ�
 
 ## 背景
 
-最近、個人開発で Django を利用しており、今後設定ファイルを使い回しできるようにテンプレートの用意を行いました。
+最近、個人開発で Django を利用しています。今後設定ファイルを使い回しできるよう、アウトプットも兼ねてテンプレートリポジトリを用意したいと思った次第です。
+
+当リポジトリを参考にして頂ける場合は適宜自分のプロジェクトに合うように調整して利用いただければと思います。
+
+また、作者はDjangoを業務では使用していないため、その点はご了承ください。改善点のご指摘・アドバイスは大歓迎です。
 
 ## 採用技術
 
@@ -23,62 +27,65 @@ Django プロジェクトにおける設定ファイルのテンプレートリ�
 - vscode (エディタ)
 - github actions (CI/CD)
 
-## 各種解説
+# 各種解説
 
-### Django
+## Django
 
-#### ディレクトリ構成
+### ディレクトリ構成
 
 ```
 app/
 ├── config/
 │   ├── __init__.py
+│   ├── asgi.py
 │   ├── settings/
 │   │   ├── __init__.py
 │   │   ├── base.py
 │   │   ├── local.py
 │   │   ├── production.py
-│   │   └── staging.py
-│   └── urls.py
-├── manage.py
+│   │   ├── staging.py
+│   │   └── test.py
+│   ├── urls.py
+│   └── wsgi.py
+└── manage.py
 ```
 
-#### django-environ
+## django-environ
 
 記述予定
 
-#### djangorestframework
+## djangorestframework
 
 記述予定
 
-#### django-debug-toolbar
+## django-debug-toolbar
 
 記述予定
 
-### uv
+## uv
 
 記述予定
 
-### ruff, mypy
+## ruff, mypy
 
 記述予定
 
-### poethepoet
+## poethepoet
 
 記述予定
 
-### docker
+## docker
 
 記述予定
 
-### pre-commit
+## pre-commit
 
 記述予定
 
-### vscode
+## vscode
 
 記述予定
 
-### github actions
+## github actions
 
 記述予定
