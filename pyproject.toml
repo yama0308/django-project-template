@@ -1,0 +1,84 @@
+[project]
+name = "django-project-template"
+version = "0.1.0"
+description = "Django project template"
+readme = "README.md"
+requires-python = "~=3.13.0"
+dependencies = [
+    "django>=6.0.1",
+    "django-environ>=0.12.0",
+    "psycopg2-binary>=2.9.11",
+]
+
+[dependency-groups]
+dev = [
+    "django-debug-toolbar>=6.1.0",
+    "django-stubs[compatible-mypy]>=5.2.8",
+    "djangorestframework-stubs>=3.16.7",
+    "factory-boy>=3.3.3",
+    "mypy>=1.19.1",
+    "poethepoet>=0.40.0",
+    "pre-commit>=4.5.1",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "pytest-django>=4.11.1",
+    "pytest-env>=1.2.0",
+    "ruff>=0.14.11",
+    "types-factory-boy>=0.4.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.poe.tasks]
+docker-compose = "docker compose up -d"
+runserver = "python app/manage.py runserver"
+server = ["docker-compose", "runserver"]
+test = "pytest"
+test-report = "pytest --cov-report=html"
+fmt-ruff = "ruff format"
+fmt-ruff-check = "ruff check --fix"
+fmt = ["fmt-ruff", "fmt-ruff-check"]
+lint-ruff = "ruff check"
+lint-mypy = "mypy app tests"
+lint = ["lint-ruff", "lint-mypy"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 79
+src = ["app", "tests"]
+exclude = [".venv/*", "*/migrations/*"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+unfixable = ["F401", "F841"]
+ignore = ["TD", "FIX", "FBT", "COM", "PL", "FLY", "S101", "ISC001"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.django-stubs]
+django_settings_module = "config.settings.test"
+
+[tool.mypy]
+strict = true
+warn_unreachable = true
+show_error_context = true
+show_column_numbers = true
+ignore_missing_imports = true
+exclude = [".venv/", "migrations/"]
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+mypy_path = ["app", "tests"]
+
+[tool.pytest.ini_options]
+pythonpath = "app"
+addopts = "-s -vv --cov=. --cov-branch --import-mode=importlib --cov-report=term-missing"
+env = ["TZ=Asia/Tokyo", "DJANGO_SETTINGS_MODULE=config.settings.test"]
+testpaths = ["tests"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
